@@ -196,11 +196,13 @@ def parse_abl_result(file: str):
 def fill_instruction(block):
     r.cmd(f"s {block.start_address}")
     res = callJsonFromRadare("afbij")
-    result = json.loads(res)
-    block.instr = result['instrs']
-    for ind, instr in enumerate(block.instr):
-        block.instr[ind] = hex(instr)
-
+    try:
+        result = json.loads(res)
+        block.instr = result['instrs']
+        for ind, instr in enumerate(block.instr):
+            block.instr[ind] = hex(instr)
+    except:
+        logging.error("JSON Load Error occured!")
 
 #   This function takes a block and splits it into several blocks if CALL instruction(s) exist.
 #   At the termination of this function, it is provided that all CALLs are separate blocks.
@@ -713,7 +715,7 @@ def main(filename):
     abl_result = callJsonFromRadare('ablj')
 
     while abl_result == '':
-        abl_result = callJsonFromRadare.cmd('ablj')
+        abl_result = callJsonFromRadare('ablj')
 
     parse_abl_result(abl_result)
 
@@ -882,7 +884,7 @@ if __name__ == "__main__":
 
     # windows için file pathleri
     main(filename)
-    txtname = filename[filename.rfind("/")+1:] + "_result"
+    txtname = filename[filename.rfind("\\")+1:] + "_result"
     filepath = os.path.join(directory, txtname)
     if not os.path.exists(filepath + ".txt"):
         with open(filepath, 'w') as f:

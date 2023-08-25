@@ -1,0 +1,3 @@
+python main.py test.exe 4 C://Users//lab//Desktop//spoe
+
+python main.py "C:\\Program Files (x86)\\Adobe\\Reader 9.0\\Reader\\AcroRd32.dll" 4 C:\\Users\\lab\\Desktop\\spoe
